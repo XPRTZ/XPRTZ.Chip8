@@ -33,7 +33,7 @@ public class MainGame : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
 
-        Services.AddService<IKeyboard>(new EmulatedKeyboard());
+        Services.AddService<IKeyboard>(new HardwareKeyboard());
         Services.AddService<IScreen>(new Chip8Screen());
         Services.AddService<ISound>(new Buzzer());
         Services.AddService<IFont>(new Chip8Font());
@@ -83,7 +83,7 @@ public class MainGame : Game
             return;
         }
 
-        _chip8.LoadRom("./ROMS/Games/Breakout (Brix hack) [David Winter, 1997].ch8");
+        _chip8.LoadRom("./ROMS/Tests/6-keypad.ch8");
 
         _deltaTime = Stopwatch.Frequency / (double)_chip8.ClockSpeed;
 

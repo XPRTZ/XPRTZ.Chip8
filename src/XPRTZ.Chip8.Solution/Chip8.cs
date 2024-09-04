@@ -85,10 +85,10 @@ public class Chip8
 
         var romData = _romDataProvider.GetROMData(path);
 
-        if (romData.Rom.Length > romData.Metadata.Options.MaxSize)
-        {
-            throw new OutOfMemoryException($"ROM size to large, maximum ROM size supported is: {romData.Metadata.Options.MaxSize} bytes.");
-        }
+        //if (romData.Rom.Length > romData.Metadata.Options.MaxSize)
+        //{
+        //    throw new OutOfMemoryException($"ROM size to large, maximum ROM size supported is: {romData.Metadata.Options.MaxSize} bytes.");
+        //}
 
         // https://laurencescotford.com/chip-8-ram-or-memory-management-with-chip-8/
         Array.Copy(romData.Rom, 0, _memory, _romStartAddress, romData.Rom.Length);

@@ -1,5 +1,6 @@
 ﻿namespace XPRTZ.Chip8;
 
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,18 +19,21 @@ public class MainGame : Game
 
     private Chip8? _chip8;
 
+    private double _deltaTime;
+    private double _accumulator;
+
     private int _screenWidth;
     private int _screenHeight;
 
-    private int _scaleWidth = 10;
-    private int _scaleHeight = 10;
+    private const int _scaleWidth = 30;
+    private const int _scaleHeight = 30;
 
     public MainGame()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
 
-        Services.AddService<IKeyboard>(new EmulatedKeyboard());
+        Services.AddService<IKeyboard>(new HardwareKeyboard());
         Services.AddService<IScreen>(new Chip8Screen());
         Services.AddService<ISound>(new Buzzer());
         Services.AddService<IFont>(new Chip8Font());
@@ -78,8 +82,10 @@ public class MainGame : Game
         {
             return;
         }
-
+        
         _chip8.LoadRom("./ROMS/Tests/1-chip8-logo.ch8");
+
+        _deltaTime = Stopwatch.Frequency / (double)_chip8.ClockSpeed;
 
         Window.Title = _chip8.RomMetadata.Title;
     }
@@ -91,9 +97,14 @@ public class MainGame : Game
             Exit();
         }
 
-        // TODO: Calculate the correct clockcycles
         // https://gafferongames.com/post/fix_your_timestep/
-        _chip8?.Cycle();
+        _accumulator = gameTime.ElapsedGameTime.Ticks;
+
+        while (_accumulator >= _deltaTime)
+        {
+            _chip8?.Cycle();
+            _accumulator -= _deltaTime;
+        }
 
         base.Update(gameTime);
     }

@@ -25,8 +25,8 @@ public class MainGame : Game
     private int _screenWidth;
     private int _screenHeight;
 
-    private const int _scaleWidth = 10;
-    private const int _scaleHeight = 10;
+    private const int _scaleWidth = 30;
+    private const int _scaleHeight = 30;
 
     public MainGame()
     {
@@ -83,7 +83,8 @@ public class MainGame : Game
             return;
         }
 
-        _chip8.LoadRom("./ROMS/Tests/6-keypad.ch8");
+        _chip8.LoadRom("./ROMS/Games/caveexplorer.ch8");
+        //_chip8.LoadRom("./ROMS/Games/Space Invaders [David Winter].ch8");
 
         _deltaTime = Stopwatch.Frequency / (double)_chip8.ClockSpeed;
 
